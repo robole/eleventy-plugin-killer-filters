@@ -1,0 +1,5 @@
+.eleventyignore
+.github/
+_site/
+sample/
+test/

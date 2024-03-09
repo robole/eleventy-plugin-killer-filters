@@ -1,0 +1,31 @@
+{
+  "name": "eleventy-plugin-killer-filters",
+  "version": "0.1.0",
+  "description": "Killer filters to make writing templates simpler.",
+  "main": "eleventy.config.js",
+  "keywords": [
+    "eleventy",
+    "eleventy-plugin"
+  ],
+  "author": "Rob O'Leary",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/robole/eleventy-plugin-killer-filters"
+  },
+  "scripts": {
+    "test": "jest --silent",
+    "dev": "eleventy --serve"
+  },
+  "dependencies": {
+    "luxon": "^3.4.4",
+    "posthtml": "^0.16.6",
+    "posthtml-urls": "^1.0.0"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^2.0.1",
+    "eslint": "^8.57.0",
+    "eslint-config-node-roboleary": "^0.1.0",
+    "jest": "^29.7.0"
+  }
+}
