@@ -39,4 +39,17 @@ describe("htmlToAbsoluteUrls", () => {
 
     expect(output).toBe(expected);
   });
+
+  test("Change the `src` of an `img` tag that contains a relative path into an absolute url and have the tag have a trailing slash", async () => {
+    let output = await asyncFilters.htmlToAbsoluteUrls(
+      `<img src="/test.png" alt="this is test image">`,
+      "http://example.com/",
+      {
+        closingSingleTag: "slash",
+      }
+    );
+    let expected = `<img src="http://example.com/test.png" alt="this is test image" />`;
+
+    expect(output).toBe(expected);
+  });
 });

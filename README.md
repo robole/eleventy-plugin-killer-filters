@@ -15,6 +15,7 @@ This is an Eleventy plugin that provide killer filters to make writing templates
 | `dateRfc339`   |  Convert a Date into a valid [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339) format used in Atom feeds. | [Read more](#datetorfc339) |
 | `dateShort`   |  Convert a Date into a short, more readable format. | - |
 |`getMostRecentDate` | Get the most recent date found in `date` field in a collection. | - |
+|`htmlToAbsoluteUrls` | (async) Transform all of the URLs in a block of HTML with the `absoluteUrl` filter. Uses posthtml-urls. |
 | `trunc`   | Returns the integer part of a number by removing any fractional digits. It is the [`Math.trunc()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/trunc) method.   | - |
 
 ### dateRfc822
@@ -29,9 +30,28 @@ This date format is used for dates in [RSS feeds](https://www.rssboard.org/rss-s
 
 Format a `Date` to a string that meets the Date and Time specifications as defined by [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339).
 
-This filter returns a date in the following format: *2024-01-21T14:48:00+00:00*. Other variations can comply with the specification too, of course! The timezone component is fixed as UTC.
+This filter returns a date in the following format: *2024-01-21T14:48:00+0A string representing the base URL to use in cases where url is a relative URL.0:00*. Other variations can comply with the specification too, of course! The timezone component is fixed as UTC.
 
 This date format is used for all dates in [Atom feeds (The Atom Syndication Format)](https://www.rfc-editor.org/rfc/rfc4287).
+
+## Options
+
+The options object can contain the following properties:
+- `baseUrl`: A string representing the base URL to use in cases where a url is relative and is being converted to an absolute url in filters such as `absoluteUrl`.
+- `posthtmlOptions`: Advanced control of [PostHTML options](https://github.com/posthtml/posthtml-render#options).
+
+```javascript
+const pluginFilters = require("eleventy-plugin-killer-filters");
+
+module.exports = function(eleventyConfig) {
+  eleventyConfig.addPlugin(pluginFilters, {
+		baseUrl: "https://www.11ty.dev",
+    posthtmlOptions: {
+      closingSingleTag: "default" // opt-out of <img/> style XHTML single tags
+    }
+  });
+};
+```
 
 ## Dates in Eleventy
 

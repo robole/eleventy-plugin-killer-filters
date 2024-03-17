@@ -12,15 +12,16 @@ let defaultZone = "utc";
  * @return {string} The absolute url. An empty string is returned if there is an error.
  */
 function absoluteUrl(url, base) {
-  let absUrl = "";
+  let absUrl = url;
 
   //  if (this.eleventy.env.runMode === "build") {
   try {
     absUrl = new URL(url, base).toString();
   } catch (e) {
-    console.error(
+    // TODO: Add debugging output
+    /* console.error(
       `absoluteUrl: Trying to convert '${url}' to be an absolute url with base '${base}' and failed`
-    );
+    ); */
   }
 
   return absUrl;
