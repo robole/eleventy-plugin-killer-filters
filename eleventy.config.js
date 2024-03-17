@@ -8,7 +8,6 @@ let pluginOptions = {
 /** @param {import("@11ty/eleventy").UserConfig} config */
 module.exports = function (config, options = {}) {
   let mergedOptions = { ...pluginOptions, ...options };
-  console.log(mergedOptions);
 
   // eslint-disable-next-line prefer-arrow-callback
   config.addFilter("absoluteUrl", function (url) {

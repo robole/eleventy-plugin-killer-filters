@@ -1,4 +1,6 @@
 .eleventyignore
+.eslintrc
+.gitattributes
 .github/
 _site/
 sample/
