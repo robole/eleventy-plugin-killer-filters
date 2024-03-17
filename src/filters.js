@@ -1,5 +1,6 @@
 const { DateTime } = require("luxon");
 const { URL } = require("url");
+const debugA = require("debug")("EleventyPluginKillerFilters:absoluteUrl");
 
 let defaultZone = "utc";
 
@@ -18,10 +19,12 @@ function absoluteUrl(url, base) {
   try {
     absUrl = new URL(url, base).toString();
   } catch (e) {
-    // TODO: Add debugging output
-    /* console.error(
-      `absoluteUrl: Trying to convert '${url}' to be an absolute url with base '${base}' and failed`
-    ); */
+    debugA(
+      "Trying to convert %o to be an absolute url with base %o and failed, returning: %o (invalid url)",
+      url,
+      base,
+      url
+    );
   }
 
   return absUrl;

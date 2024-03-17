@@ -1,6 +1,6 @@
 {
   "name": "eleventy-plugin-killer-filters",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Killer filters to make writing templates simpler.",
   "main": "eleventy.config.js",
   "engines": {
@@ -21,6 +21,7 @@
     "dev": "eleventy --serve"
   },
   "dependencies": {
+    "debug": "^4.3.4",
     "luxon": "^3.4.4",
     "posthtml": "^0.16.6",
     "posthtml-urls": "^1.0.0"
