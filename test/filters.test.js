@@ -56,6 +56,11 @@ describe("dateRfc3339", () => {
   });
 });
 
+test("dateShort", () => {
+  const date = new Date("2022-11-28");
+  expect(filters.dateShort(date)).toBe("28 Nov 2022");
+});
+
 describe("getNewestCollectionItemDate", () => {
   test("get the latest date from a collection", () => {
     let first = new Date(2018, 1, 1);

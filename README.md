@@ -8,21 +8,14 @@ This is an Eleventy plugin that provide killer filters to make writing templates
 
 | Name  | Description   | More Info |
 |-------------- | -------------- | -------------- |
-| `absoluteUrl` | Convert a relative URL or an absolute path to an absolute URL including protocol, domain, full path. | [Read more](#absoluteurl) |
-| `ceil`   |  Round a number up. It returns the smallest integer greater than or equal to a given number. This is the [`Math.ceil()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/ceil) method. | [Read more](#ceil) |
-| `floor`  |  Round a number down. It returns the largest integer less than or equal to a given number. This is the [`Math.floor()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor) method. | [Read more](#floor) |
-| `dateRfc822`   |  Convert a Date into a valid [RFC-822](https://www.rfc-editor.org/rfc/rfc822.html) format. This is used for RSS feeds. Format is: *Sun, 21 Jan 2024 14:48:02 +00:00*. | [Read more](#datetorfc822) |
-| `dateRfc339`   |  Convert a Date into a valid [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339) format. This is used for Atom feeds. Format is: *2024-01-21T14:48:02+00:00*. | [Read more](#datetorfc339) |
-| `htmlToAbsoluteUrls`   |  Transform all  URLs in a block of HTML to an absolute url. | [Read more](#htmltoabsoluteurls) |
-| `trunc`   | Returns the integer part of a number by removing any fractional digits. Thishttps://liquidjs.com/index.html is the [`Math.trunc()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/trunc) method.   | [Read more](#trunc) |
-
-### absoluteUrl
-
-Convert a relative URL or an absolute file path to an absolute URL including protocol, domain, full path.
-
-### ceil
-
-Round a number up. It returns the smallest integer greater than or equal to a given number. This is the [`Math.ceil()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/ceil) method.
+| `absoluteUrl` | Convert a relative URL or an absolute path to an absolute URL including protocol, domain, full path. | - |
+| `ceil`   |  Round a number up. It is the [`Math.ceil()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/ceil) method. |  - |
+| `floor`  |  Round a number down. It is the [`Math.floor()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor) method. | - |
+| `dateRfc822`   |  Convert a Date into a valid [RFC-822](https://www.rfc-editor.org/rfc/rfc822.html) format used in RSS feeds. | [Read more](#datetorfc822) |
+| `dateRfc339`   |  Convert a Date into a valid [RFC 3339](https://datatracker.ietf.org/doc/html/rfc3339) format used in Atom feeds. | [Read more](#datetorfc339) |
+| `dateShort`   |  Convert a Date into a short, more readable format. | - |
+|`getMostRecentDate` | Get the most recent date found in `date` field in a collection. | - |
+| `trunc`   | Returns the integer part of a number by removing any fractional digits. It is the [`Math.trunc()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/trunc) method.   | - |
 
 ### dateRfc822
 
@@ -39,14 +32,6 @@ Format a `Date` to a string that meets the Date and Time specifications as defin
 This filter returns a date in the following format: *2024-01-21T14:48:00+00:00*. Other variations can comply with the specification too, of course! The timezone component is fixed as UTC.
 
 This date format is used for all dates in [Atom feeds (The Atom Syndication Format)](https://www.rfc-editor.org/rfc/rfc4287).
-
-### floor
-
-Round a number down. It returns the largest integer less than or equal to a given number. This is the [`Math.floor()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor) method.
-
-### htmlToAbsoluteUrls
-
-Transform all URLs in a block of HTML to an absolute url.
 
 ## Dates in Eleventy
 

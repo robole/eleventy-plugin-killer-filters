@@ -14,11 +14,12 @@ let defaultZone = "utc";
 function absoluteUrl(url, base) {
   let absUrl = "";
 
+  //  if (this.eleventy.env.runMode === "build") {
   try {
     absUrl = new URL(url, base).toString();
   } catch (e) {
     console.error(
-      `Trying to convert ${url} to be an absolute url with base ${base} and failed`
+      `absoluteUrl: Trying to convert '${url}' to be an absolute url with base '${base}' and failed`
     );
   }
 
@@ -50,9 +51,15 @@ function dateRfc3339(date) {
 
 exports.dateRfc3339 = dateRfc3339;
 
-function htmlToAbsoluteUrls() {}
+/*
+ * Returns a more readable string representation of a date, in the form of '28 Nov 2022'
+ */
+function dateShort(date) {
+  const dt = DateTime.fromJSDate(date, { zone: defaultZone });
+  return dt.toFormat("dd LLL yyyy");
+}
 
-exports.htmlToAbsoluteUrls = htmlToAbsoluteUrls;
+exports.dateShort = dateShort;
 
 /*
  * Gets the most recent item in a collection based on the `date` field.

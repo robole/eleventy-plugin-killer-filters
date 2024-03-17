@@ -3,3 +3,5 @@
 _site/
 sample/
 test/
+*.md
+!README.md

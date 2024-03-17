@@ -18,13 +18,13 @@ async function htmlToAbsoluteUrls(html, base, processOptions = {}) {
     );
   }
 
-  let options = {
+  let posthtmlOptions = {
     eachURL(url) {
       return absoluteUrl(url.trim(), base);
     },
   };
 
-  let modifier = posthtml().use(urls(options));
+  let modifier = posthtml().use(urls(posthtmlOptions));
 
   let result = await modifier.process(html, processOptions);
   return result.html;
