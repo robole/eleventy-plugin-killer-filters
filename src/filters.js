@@ -1,28 +1,35 @@
 const { DateTime } = require("luxon");
 const { URL } = require("url");
+const constants = require("./constants");
 const debugA = require("debug")("EleventyPluginKillerFilters:absoluteUrl");
 
 let defaultZone = "utc";
 
 /**
  * Convert a relative URL or an absolute path to an absolute URL
- * including protocol, domain, full path.
+ * including protocol and a domain.
  *
  * @param {string | object } url - A string or any other object with a stringifier — including, for example, an <a> or <area> element — that represents an absolute or relative URL. If url is a relative URL, base is required, and will be used as the base URL. If url is an absolute URL, a given base will be ignored.
- * @param {string} base - A string representing the base URL to use in cases where url is a relative URL. If not specified, it defaults to `undefined`.
- * @return {string} The absolute url. An empty string is returned if there is an error.
+ * @param {string} baseUrl - A string representing the base URL to use in cases where url is a relative URL. If not specified, it defaults to `undefined`.
+ * @return {string} The absolute url. If there is an error, the original url is returned.
  */
-function absoluteUrl(url, base) {
-  let absUrl = url;
+function absoluteUrl(url, baseUrl) {
+  if (baseUrl === undefined || baseUrl === null || baseUrl === "") {
+    throw new Error(
+      `${constants.ERORR_MESSAGE_PREFIX}:absoluteUrl - The baseUrl parameter was missing or empty.`
+    );
+  }
 
+  let absUrl = url;
   //  if (this.eleventy.env.runMode === "build") {
+
   try {
-    absUrl = new URL(url, base).toString();
+    absUrl = new URL(url, baseUrl).toString();
   } catch (e) {
     debugA(
-      "Trying to convert %o to be an absolute url with base %o and failed, returning: %o (invalid url)",
+      "Trying to convert %o to be an absolute url with baseUrl %o and failed, returning: %o (invalid url)",
       url,
-      base,
+      baseUrl,
       url
     );
   }
