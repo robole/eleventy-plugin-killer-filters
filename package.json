@@ -1,6 +1,6 @@
 {
   "name": "eleventy-plugin-killer-filters",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Killer filters to make writing templates simpler.",
   "main": "eleventy.config.js",
   "engines": {
@@ -17,8 +17,7 @@
     "url": "https://github.com/robole/eleventy-plugin-killer-filters"
   },
   "scripts": {
-    "test": "jest --silent",
-    "dev": "eleventy --serve"
+    "test": "jest --silent"
   },
   "dependencies": {
     "debug": "^4.3.4",

@@ -1,16 +1,24 @@
 const filters = require("../src/filters");
 
 describe("absoluteUrl", () => {
-  test("should convert a relative url to an absolute url based on the baseUrl parameter provided", () => {
+  test("should convert a relative url to an absolute url based on the 'baseurl' parameter provided", () => {
     let url = "/tech/blog";
-    let baseUrl = "https://www.example.com";
+    let baseurl = "https://www.example.com";
 
-    expect(filters.absoluteUrl(url, baseUrl)).toBe(
+    expect(filters.absoluteUrl(url, baseurl)).toBe(
       "https://www.example.com/tech/blog"
     );
   });
 
-  test("should throw an error when the baseUrl  parameter is not provided or is an empty string", () => {
+  test("should only convert a relative url to an absolute url when in production", () => {
+    let url = "/tech/blog";
+    let baseurl = "https://www.example.com";
+    let production = false;
+
+    expect(filters.absoluteUrl(url, baseurl, production)).toBe(url);
+  });
+
+  test("should throw an error when the 'baseurl' parameter is not provided", () => {
     let url = "/tech/blog";
 
     expect(() => {
@@ -18,13 +26,13 @@ describe("absoluteUrl", () => {
     }).toThrow();
 
     expect(() => {
-      filters.absoluteUrl(url, "");
+      filters.absoluteUrl(url, null);
     }).toThrow();
   });
 });
 
 describe("ceil", () => {
-  test("should round a number up", () => {
+  test("should round a number up to neares whole number", () => {
     expect(filters.ceil(0.95)).toBe(1);
     expect(filters.ceil(7.004)).toBe(8);
   });
@@ -84,6 +92,165 @@ describe("dateShort", () => {
   test("should convert a Date object to a string like '28 Nov 2022'", () => {
     const date = new Date("2022-11-28");
     expect(filters.dateShort(date)).toBe("28 Nov 2022");
+  });
+});
+
+describe("group", () => {
+  test("should group the elements of an array by a provided property and return a Map", () => {
+    let array = [
+      {
+        year: 2018,
+        fileSlug: "post-1",
+      },
+      {
+        year: 2023,
+        fileSlug: "post-2",
+      },
+      {
+        year: 2023,
+        fileSlug: "post-3",
+      },
+      {
+        year: 2024,
+        fileSlug: "post-4",
+      },
+    ];
+
+    let groupedMap = filters.group(array, "year");
+
+    let expectedMap = new Map();
+    expectedMap.set(2018, [
+      {
+        year: 2018,
+        fileSlug: "post-1",
+      },
+    ]);
+    expectedMap.set(2023, [
+      {
+        year: 2023,
+        fileSlug: "post-2",
+      },
+      {
+        year: 2023,
+        fileSlug: "post-3",
+      },
+    ]);
+    expectedMap.set(2024, [
+      {
+        year: 2024,
+        fileSlug: "post-4",
+      },
+    ]);
+
+    expect(groupedMap).toStrictEqual(expectedMap);
+  });
+
+  test("should group the elements of an array by a provided property when it is not defined on an object", () => {
+    let array = [
+      {
+        year: 2018,
+        fileSlug: "post-1",
+      },
+      {
+        year: 2023,
+        fileSlug: "post-2",
+      },
+      {
+        year: 2023,
+        fileSlug: "post-3",
+      },
+      {
+        fileSlug: "post-4",
+      },
+    ];
+
+    let expectedMap = new Map();
+    expectedMap.set(2018, [
+      {
+        year: 2018,
+        fileSlug: "post-1",
+      },
+    ]);
+    expectedMap.set(2023, [
+      {
+        year: 2023,
+        fileSlug: "post-2",
+      },
+      {
+        year: 2023,
+        fileSlug: "post-3",
+      },
+    ]);
+    expectedMap.set(undefined, [
+      {
+        fileSlug: "post-4",
+      },
+    ]);
+
+    let groupedMap = filters.group(array, "year");
+
+    expect(expectedMap).toStrictEqual(groupedMap);
+  });
+
+  test("should group the elements of an array by a nested property using dot notation and return a Map", () => {
+    let array = [
+      {
+        year: 2018,
+        fileSlug: "post-1",
+        data: {
+          series: "CSS tutorials",
+        },
+      },
+      {
+        year: 2023,
+        fileSlug: "post-2",
+        data: {
+          series: "CSS tutorials",
+        },
+      },
+      {
+        year: 2023,
+        fileSlug: "post-3",
+        data: {
+          series: "HTML tutorials",
+        },
+      },
+    ];
+
+    let expectedMap = new Map();
+    expectedMap.set("CSS tutorials", [
+      {
+        year: 2018,
+        fileSlug: "post-1",
+        data: {
+          series: "CSS tutorials",
+        },
+      },
+      {
+        year: 2023,
+        fileSlug: "post-2",
+        data: {
+          series: "CSS tutorials",
+        },
+      },
+    ]);
+    expectedMap.set("HTML tutorials", [
+      {
+        year: 2023,
+        fileSlug: "post-3",
+        data: {
+          series: "HTML tutorials",
+        },
+      },
+    ]);
+
+    let groupedMap = filters.group(array, "data.series");
+
+    expect(expectedMap).toStrictEqual(groupedMap);
+  });
+
+  test("should throw an error when the property provided resolves to undefined", () => {
+    expect(1).toBe(2);
   });
 });
 

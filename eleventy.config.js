@@ -2,7 +2,7 @@ const filters = require("./src/filters");
 const asyncFilters = require("./src/async-filters");
 
 let pluginOptions = {
-  baseUrl: "",
+  baseurl: "",
   posthtmlOptions: {
     closingSingleTag: "slash",
   },
@@ -14,7 +14,9 @@ module.exports = function (config, options = {}) {
 
   // eslint-disable-next-line prefer-arrow-callback
   config.addNunjucksFilter("absoluteUrl", function (url) {
-    return filters.absoluteUrl(url, mergedOptions.baseUrl);
+    let production = this.eleventy.env.runMode === "build";
+
+    return filters.absoluteUrl(url, mergedOptions.baseurl, production);
   });
 
   config.addNunjucksFilter("ceil", filters.ceil);
@@ -26,6 +28,7 @@ module.exports = function (config, options = {}) {
     filters.getNewestCollectionItemDate
   );
   config.addNunjucksFilter("floor", filters.floor);
+  config.addNunjucksFilter("group", filters.group);
   config.addNunjucksFilter("trunc", filters.trunc);
 
   // async nunjucks filters require a callback

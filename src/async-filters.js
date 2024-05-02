@@ -6,7 +6,7 @@ const { absoluteUrl } = require("./filters");
 /*
  * Transform all URLs in a block of HTML to an absolute url.
  *
- * Uses [PostHML tool for transforming HTML/XML](https://www.npmjs.com/package/posthtml) with the [posthtml-urls plugin](https://www.npmjs.com/package/posthtml-urls).
+ * Uses [PostHMTL tool for transforming HTML/XML](https://www.npmjs.com/package/posthtml) with the [posthtml-urls plugin](https://www.npmjs.com/package/posthtml-urls).
  *
  * @param {string} html - The HTML content
  * @param {string} baseUrl - A string representing the base URL to use in cases where url is a relative URL. If not specified, an error is thrown.

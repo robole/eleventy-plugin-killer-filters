@@ -1,37 +1,41 @@
 const { DateTime } = require("luxon");
 const { URL } = require("url");
 const constants = require("./constants");
+const util = require("./util");
+
 const debugA = require("debug")("EleventyPluginKillerFilters:absoluteUrl");
 
 let defaultZone = "utc";
 
 /**
  * Convert a relative URL or an absolute path to an absolute URL
- * including protocol and a domain.
+ * including protocol and a domain. Conversion only occurs when eleventy is run in production/build mode.
  *
  * @param {string | object } url - A string or any other object with a stringifier — including, for example, an <a> or <area> element — that represents an absolute or relative URL. If url is a relative URL, base is required, and will be used as the base URL. If url is an absolute URL, a given base will be ignored.
- * @param {string} baseUrl - A string representing the base URL to use in cases where url is a relative URL. If not specified, it defaults to `undefined`.
+ * @param {string} baseurl - A string representing the base URL to use in cases where url is a relative URL. If not specified, it defaults to `undefined`.
+ * @param {boolean} production - A boolean indicating if eleventy is running in production or not
  * @return {string} The absolute url. If there is an error, the original url is returned.
  */
-function absoluteUrl(url, baseUrl) {
-  if (baseUrl === undefined || baseUrl === null || baseUrl === "") {
+function absoluteUrl(url, baseurl, production = true) {
+  if (baseurl === undefined || baseurl === null) {
     throw new Error(
-      `${constants.ERORR_MESSAGE_PREFIX}:absoluteUrl - The baseUrl parameter was missing or empty.`
+      `${constants.ERORR_MESSAGE_PREFIX}:absoluteUrl - The baseurl parameter is missing.`
     );
   }
 
   let absUrl = url;
-  //  if (this.eleventy.env.runMode === "build") {
 
-  try {
-    absUrl = new URL(url, baseUrl).toString();
-  } catch (e) {
-    debugA(
-      "Trying to convert %o to be an absolute url with baseUrl %o and failed, returning: %o (invalid url)",
-      url,
-      baseUrl,
-      url
-    );
+  if (production) {
+    try {
+      absUrl = new URL(url, baseurl).toString();
+    } catch (e) {
+      debugA(
+        "Trying to convert %o to be an absolute url with baseurl %o and failed, returning: %o (invalid url)",
+        url,
+        baseurl,
+        url
+      );
+    }
   }
 
   return absUrl;
@@ -85,6 +89,32 @@ function getNewestCollectionItemDate(collection, emptyFallbackDate) {
 }
 
 exports.getNewestCollectionItemDate = getNewestCollectionItemDate;
+
+/**
+ * Group an array’s items by a given property. If the property does not exist on an item, it will be grouped as `undefined`.
+ *
+ * @param {Array}  arr - An array.
+ * @param {string|number} property - A property to group the data by. Can be a nested property using dot notation.
+ * @returns {Map} Map of the grouped data.
+ */
+function group(arr, property) {
+  const map = new Map();
+  let array = util.toArray(arr);
+
+  array.forEach((item) => {
+    const key = util.getPropertyKey(item, property);
+
+    if (map.has(key)) {
+      map.get(key).push(item);
+    } else {
+      map.set(key, [item]);
+    }
+  });
+
+  return map;
+}
+
+exports.group = group;
 
 exports.floor = Math.floor;
 
