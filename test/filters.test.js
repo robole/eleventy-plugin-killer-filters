@@ -18,6 +18,15 @@ describe("absoluteUrl", () => {
     expect(filters.absoluteUrl(url, baseurl, production)).toBe(url);
   });
 
+  test("should preserve trailing slashes", () => {
+    let url = "blog/eleventy-csv/";
+    let baseurl = "https://www.example.com";
+    let production = true;
+    let expected = `https://www.example.com/blog/eleventy-csv/`;
+
+    expect(filters.absoluteUrl(url, baseurl, production)).toBe(expected);
+  });
+
   test("should throw an error when the 'baseurl' parameter is not provided", () => {
     let url = "/tech/blog";
 
@@ -51,16 +60,39 @@ describe("dateRfc822", () => {
 
   test("should convert a Date object created with a string with explicit UTC timezone and same timezone as output to a RCF 822 string", () => {
     const date = new Date("21 January 2024 14:48 UTC");
-    const parsedDate = filters.dateRfc822(date);
+    const parsedDate = filters.dateRfc822(date, "utc");
 
     expect(parsedDate).toBe("Sun, 21 Jan 2024 14:48:00 +00:00");
   });
 
-  test("should convert a Date object created with a string with explicit offset to a RCF 822 string", () => {
-    let d = new Date("Jan 21 2024 14:48:02 -0500");
-    const parsedDate = filters.dateRfc822(d);
+  test("should convert a Date object and format to a specific timezone", () => {
+    let d = new Date("Jan 21 2024 14:48:02 UTC");
+    const parsedDate = filters.dateRfc822(d, "Asia/Tokyo");
 
-    expect(parsedDate).toBe("Sun, 21 Jan 2024 19:48:02 +00:00");
+    expect(parsedDate).toBe("Sun, 21 Jan 2024 23:48:02 +09:00");
+  });
+
+  test("should convert a Date object and format to a specific locale", () => {
+    let d = new Date("Jan 21 2024 14:48:02 UTC");
+    const parsedDate = filters.dateRfc822(d, null, "fr");
+
+    expect(parsedDate).toMatch(
+      /dim\., 21 janv. 2024 \d{2}:\d{2}:\d{2} \+\d{2}:\d{2}/
+    );
+  });
+
+  test("should return the original date when an invalid timezone is provided", () => {
+    let d = new Date("Jan 21 2024 14:48:02 UTC");
+    const parsedDate = filters.dateRfc822(d, "zzz");
+
+    expect(parsedDate).toBe(d);
+  });
+
+  test("should return the original date when an invalid locale is provided", () => {
+    let d = new Date("Jan 21 2024 14:48:02 UTC");
+    const parsedDate = filters.dateRfc822(d, null, "koko koko");
+
+    expect(parsedDate).toBe(d);
   });
 });
 
@@ -247,10 +279,6 @@ describe("group", () => {
     let groupedMap = filters.group(array, "data.series");
 
     expect(expectedMap).toStrictEqual(groupedMap);
-  });
-
-  test("should throw an error when the property provided resolves to undefined", () => {
-    expect(1).toBe(2);
   });
 });
 

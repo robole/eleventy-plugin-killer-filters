@@ -27,9 +27,9 @@ You can supply an optional second argument to `addPlugin` to customize the plugi
 
 ## Filters
 
-| Name  | Description   | More Info | Done |
+| Name  | Description   | More Info | Done? |
 |-------------- | -------------- | -------------- | --- |
-| `absoluteUrl` | Convert a relative URL or an absolute path to an absolute URL. | - | ✅ |
+| `absoluteUrl` | Convert a relative URL or an absolute path to an absolute URL. Conversion only occurs when eleventy is run in production. | [Read more](#absoluteurl) | ✅ |
 | `ceil`   |  Round a number up. Uses the [`Math.ceil()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/ceil) method. |  - | ✅ |
 | `floor`  |  Round a number down. Uses the [`Math.floor()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/floor) method. | - | ✅ |
 | `dateRfc822`   |  Convert a Date into a valid [RFC-822](https://www.rfc-editor.org/rfc/rfc822.html) format: *Sun, 21 Jan 2024 14:48:02 +00:00*. This format is used in RSS feeds. | [Read more](#datetorfc822) |
@@ -38,7 +38,7 @@ You can supply an optional second argument to `addPlugin` to customize the plugi
 |`getMostRecentDate` | Get the most recent date found in `date` field in a collection. | - |
 |`group` | Group an array’s items by a given property. Returns a `Map` unlike the `groupBy` nunjucks filter. | - |
 |`htmlToAbsoluteUrls` | (async) Transform all of the URLs in a block of HTML with the `absoluteUrl` filter. Uses posthtml-urls. |
-| `trunc`   | Returns the integer part of a number by removing any fractional digits. It is the [`Math.trunc()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/trunc) method.   | - |
+| `trunc`   | Returns the integer part of a number by removing any fractional digits. Uses the [`Math.trunc()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/trunc) method.   | ✅ |
 
 ### absoluteUrl
 
@@ -53,17 +53,17 @@ module.exports = function(eleventyConfig) {
 };
 ```
 
-For example when used in a template, the following `{{ "about.html" | absoluteUrl }}` will produce "https://www.roboleary.net/about.html".
+For example when used in a template, the following `{{ "/about.html" | absoluteUrl }}` will produce "https://www.roboleary.net/about.html".
 
 Conversion only occurs when eleventy is run in production (running with `--build` flag). If there was [access to the local server when running in dev mode (running with `--serve` flag)](https://github.com/11ty/eleventy/issues/3273), I would use this to always produce an absolute URL.
 
 ### dateRfc822
 
-Format a `Date` to a string that meets the date and time specifications defined by [RFC 822](https://www.rfc-editor.org/rfc/rfc822.html).
+Format a `Date` to a string that meets the date and time specifications defined by [RFC 822](https://www.rfc-editor.org/rfc/rfc822.html). This filter returns a date in the following specific format: *Sun, 21 Jan 2024 14:48:02 +00:00*.
 
-This filter returns a date in the following specific format: *Sun, 21 Jan 2024 14:48:02 +00:00*. Other variations can comply with the specification too, of course! The timezone component is fixed as UTC.
+Locale defaults to `en-US` if no locale has been specified, regardless of the system's locale.
 
-This date format is used for dates in [RSS feeds](https://www.rssboard.org/rss-specification)`.
+This date format is used for dates in [RSS feeds](https://www.rssboard.org/rss-specification).
 
 ### dateRfc339
 
@@ -72,6 +72,10 @@ Format a `Date` to a string that meets the Date and Time specifications as defin
 This filter returns a date in the following format: *2024-01-21T14:48:00+00:00*. Other variations can comply with the specification too, of course! The timezone component is fixed as UTC.
 
 This date format is used for all dates in [Atom feeds (The Atom Syndication Format)](https://www.rfc-editor.org/rfc/rfc4287).
+
+### dateShort
+
+You can look up [Luxon's table of tokens](https://moment.github.io/luxon/#/formatting?id=table-of-tokens) to build a date format string.
 
 ## Plugin Configuration Options
 

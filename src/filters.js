@@ -30,7 +30,7 @@ function absoluteUrl(url, baseurl, production = true) {
       absUrl = new URL(url, baseurl).toString();
     } catch (e) {
       debugA(
-        "Trying to convert %o to be an absolute url with baseurl %o and failed, returning: %o (invalid url)",
+        "absoluteUrl: Trying to convert %o to be an absolute url with baseurl %o and failed, returning: %o (invalid url)",
         url,
         baseurl,
         url
@@ -51,10 +51,34 @@ exports.ceil = Math.ceil;
  * @param {Date} date - The date to format
  * @return {string} A RCF 822 formatted string representation of the date
  */
-function dateRfc822(date) {
-  const dt = DateTime.fromJSDate(date, { zone: defaultZone });
+function dateRfc822(date, timezone, locale) {
+  let dt = DateTime.fromJSDate(date);
 
-  return dt.toFormat("EEE, dd MMM yyyy HH:mm:ss ZZ");
+  if (timezone !== null) {
+    dt = dt.setZone(timezone);
+  }
+
+  if (locale !== null) {
+    dt = dt.setLocale(locale);
+  }
+
+  let formattedDate;
+
+  if (dt.isValid === false) {
+    formattedDate = date;
+
+    debugA(
+      "dateRfc822: Trying to format %o with timezone %o and locale %o. Reason: %o.",
+      date,
+      timezone,
+      locale,
+      formattedDate.invalidReason
+    );
+  } else {
+    formattedDate = dt.toFormat("EEE, dd MMM yyyy HH:mm:ss ZZ");
+  }
+
+  return formattedDate;
 }
 
 exports.dateRfc822 = dateRfc822;
@@ -117,7 +141,5 @@ function group(arr, property) {
 exports.group = group;
 
 exports.floor = Math.floor;
-
-// exports.round = Math.round;
 
 exports.trunc = Math.trunc;

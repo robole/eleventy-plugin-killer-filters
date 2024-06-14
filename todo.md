@@ -10,7 +10,6 @@
 
 1. `date`
 1. `dateLong`
-1. `group` for arrays
 1. Some kind of `find` for arrays
 
 ## Other changes

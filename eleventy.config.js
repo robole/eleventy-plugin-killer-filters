@@ -3,6 +3,10 @@ const asyncFilters = require("./src/async-filters");
 
 let pluginOptions = {
   baseurl: "",
+  dates: {
+    timezone: null,
+    locale: null,
+  },
   posthtmlOptions: {
     closingSingleTag: "slash",
   },
@@ -20,8 +24,13 @@ module.exports = function (config, options = {}) {
   });
 
   config.addNunjucksFilter("ceil", filters.ceil);
-  config.addNunjucksFilter("dateRfc822", filters.dateRfc822);
+
+  config.addNunjucksFilter("dateRfc822", (date) => {
+    filters.dateRfc822(date, mergedOptions.timezone, mergedOptions.locale);
+  });
+
   config.addNunjucksFilter("dateRfc3339", filters.dateRfc3339);
+
   config.addNunjucksFilter("dateShort", filters.dateShort);
   config.addNunjucksFilter(
     "getMostRecentDate",
@@ -41,6 +50,7 @@ module.exports = function (config, options = {}) {
   });
 };
 
+module.exports.absoluteUrl = filters.absoluteUrl;
 module.exports.dateRfc822 = filters.dateRfc822;
 module.exports.dateRfc3339 = filters.dateRfc3339;
 module.exports.dateShort = filters.dateShort;
